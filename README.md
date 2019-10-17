@@ -1,9 +1,11 @@
 # Caddy Shack
+[![Build Status](https://travis-ci.org/sdcote/caddyshack.svg?branch=master)](https://travis-ci.org/sdcote/caddyshack)
+
 This is a project to build a Caddy docker image with plugins from source. It was created specifically to act as a proxy front-end to a Prometheus time series database, but can be used for many more applications. Just supply your own `Caddyfile` (see the [primer](https://caddyserver.com/tutorial/caddyfile)) and the image will serve [just about anything](https://github.com/caddyserver/examples).
 
-You can use this project as a template to create customized builds of the Caddy server to meet you specific needs. 
+You can use this project as a template to create customized builds of the Caddy server to meet your specific needs. 
 
-### Usage
+## Usage
 
 Clone the caddyshack repository:
 
@@ -34,7 +36,7 @@ func main() {
 
 To change the version of Caddy on which to base your build, change it in the `go.mod` file. It is a good idea to use the latest version; just make sure to test your results. 
 
-By default, Go fetches the latest **release** of the plugins you include in your `caddy.go` file. If you want it to fetch a specific **commit** instead, you also need to enter the repository URL of the plugin along with the hash of the desired commit into your `go.mod` file.
+By default, Go fetches the latest release of the plugins you include in your `caddy.go` file. If you want it to fetch a specific **commit** instead, you also need to enter the repository URL of the plugin along with the hash of the desired commit into your `go.mod` file.
 
 ```go
 module caddy
@@ -43,7 +45,6 @@ go 1.12
 
 require (
 	github.com/caddyserver/caddy v1.0.3
-
 	github.com/pyed/ipfilter 44576102099e4428e7e429987a97a45122c4a656
 )
 ```
@@ -87,10 +88,9 @@ Remove the container, `www` volume and image:
 docker-compose down -v --rmi all
 ```
 
-### Running Caddy with Docker
+## Running Caddy with Docker
 
 The [coyotesys/caddy](https://hub.docker.com/r/coyotesys/caddy/) comes with a default Caddyfile that you can override by mounting your own config:
-
 ```bash
 $ docker run -d --name caddy \
     -v $(pwd)/Caddyfile:/etc/caddy/Caddyfile \
@@ -99,7 +99,6 @@ $ docker run -d --name caddy \
 ```
 
 Mount your site root using the `www` volume:
-
 ```bash
 $ docker run -d --name caddy \
     -v $(pwd)/Caddyfile:/etc/caddy/Caddyfile \
@@ -108,6 +107,21 @@ $ docker run -d --name caddy \
     coyotesys/caddy
 ```
 
+### A Windows Example
+A practical Windows example involves creating a directory on your site (`d:\wwwroot`) and creating a Caddyfile for that site in the root of the D: drive with the following content:
+```
+:80
+log stdout
+```
+
+Next place an `index.html` file with whatever you want in the `D:\wwwroot` directory. 
+
+Finally, call the following command to start a web server running in a container serving that site:
+```
+docker run --name caddy -d -p 80:80 -v "D:\Caddyfile:/etc/caddy/Caddyfile" -v "D:\wwwroot:/www" coyotesys/caddy
+```
+
+### A Prometheus Example
 Expose the Prometheus metric endpoint on `http://localhost:9180/metrics`:
 
 ```bash
@@ -128,6 +142,7 @@ example.com {
 }
 ```
 
+### Configuring SSL
 Persist Let's Encrypt certificates on host:
 
 ```bash
@@ -181,7 +196,7 @@ services:
       retries: 3
 ```
 
-### License
+## License
 
 The caddyshack project is MIT licensed and the Caddy [source code](https://github.com/caddyserver/caddy/blob/master/LICENSE.txt) is Apache 2.0 licensed. 
 
