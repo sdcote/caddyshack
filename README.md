@@ -108,13 +108,13 @@ $ docker run -d --name caddy \
 ```
 
 ### A Windows Example
-A practical Windows example involves creating a directory on your site (`d:\wwwroot`) and creating a Caddyfile for that site in the root of the D: drive with the following content:
+A practical Windows example involves creating a directory on your workstation/server (`d:\wwwroot`) and creating a Caddyfile for the site in that directory in the root of the D: drive with the following content:
 ```
 :80
 log stdout
 ```
 
-Next place an `index.html` file with whatever you want in the `D:\wwwroot` directory. 
+Next create an `index.html` file (with whatever you want) in the `D:\wwwroot` directory. 
 
 Finally, call the following command to start a web server running in a container serving that site:
 ```
