@@ -6,7 +6,7 @@ services:
 
 env:
   global:
-    - CADDY_VERSION: 1.0.3
+    - CADDYSHACK_VERSION: 1.0.4
     - DOCKER_COMPOSE_VERSION: 1.24.1
 
 before_install:
@@ -21,14 +21,14 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 script:
-  - CADDY_VERSION=$CADDY_VERSION docker-compose build caddy
+  - CADDYSHACK_VERSION=$CADDYSHACK_VERSION docker-compose build caddy
 
 after_success:
   - if [ -z "$DOCKER_USER" ]; then
       echo "PR build, skipping Docker Hub push";
     else
       docker login -u "$DOCKER_USER" -p "$DOCKER_PASS";
-      docker tag coyotesys/caddy:$CADDY_VERSION coyotesys/caddy:latest;
-      docker push coyotesys/caddy:$CADDY_VERSION;
+      docker tag coyotesys/caddy:$CADDYSHACK_VERSION coyotesys/caddy:latest;
+      docker push coyotesys/caddy:$CADDYSHACK_VERSION;
       docker push coyotesys/caddy:latest;
     fi

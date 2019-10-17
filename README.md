@@ -1,7 +1,7 @@
 # Caddy Shack
 This is a project to build a Caddy docker image with plugins from source. It was created specifically to act as a proxy front-end to a Prometheus time series database, but can be used for many more applications. Just supply your own `Caddyfile` (see the [primer](https://caddyserver.com/tutorial/caddyfile)) and the image will serve [just about anything](https://github.com/caddyserver/examples).
 
-You can use this project to create customized builds of the Caddy server to meet you specific needs. 
+You can use this project as a template to create customized builds of the Caddy server to meet you specific needs. 
 
 ### Usage
 
@@ -32,6 +32,8 @@ func main() {
 }
 ```
 
+To change the version of Caddy on which to base your build, change it in the `go.mod` file. It is a good idea to use the latest version; just make sure to test your results. 
+
 By default, Go fetches the latest **release** of the plugins you include in your `caddy.go` file. If you want it to fetch a specific **commit** instead, you also need to enter the repository URL of the plugin along with the hash of the desired commit into your `go.mod` file.
 
 ```go
@@ -57,8 +59,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        CADDY_VERSION: ${CADDY_VERSION:-1.0.3}
-    image: coyotesys/caddy:${CADDY_VERSION:-1.0.3}
+        CADDYSHACK_VERSION: ${CADDYSHACK_VERSION:-1.0.4}
+    image: coyotesys/caddy:${CADDYSHACK_VERSION:-1.0.4}
     container_name: caddy
     ports:
       - 80:80
@@ -69,7 +71,7 @@ services:
 Build the image with Docker Compose:
 
 ```bash
-CADDY_VERSION=1.0.3 docker-compose build caddy
+CADDYSHACK_VERSION=1.0.4 docker-compose build caddy
 ```
 Of course, when using Windows, you cannot set environment variables, so you have to change the versions in the `docker-compose` file and just run `docker-compose build caddy`.
 

@@ -9,8 +9,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        CADDY_VERSION: ${CADDY_VERSION:-0.10.9}
-    image: coyotesys/caddy:${CADDY_VERSION:-0.10.9}
+        CADDYSHACK_VERSION: ${CADDYSHACK_VERSION:-1.0.4}
+    image: coyotesys/caddy:${CADDYSHACK_VERSION:-1.0.4}
     container_name: caddy
     ports:
       - 80:80
